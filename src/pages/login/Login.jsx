@@ -1,9 +1,9 @@
 import './Login.css'
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-import Heading from "../../../components/Heading";
-import loginImg from '../../../../public/loginImg.png'
-import google from '../../../../public/google.png'
+import Heading from '../../components/Heading';
+import loginImg from '../../../public/loginImg.png'
+import google from '../../../public/google.png'
 
 const Login = () => {
   return (

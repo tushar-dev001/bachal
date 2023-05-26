@@ -1,11 +1,11 @@
 import Registration from "./pages/registration/Registration"
+import Login from "./pages/login/Login";
 import {
   createBrowserRouter,
   RouterProvider,
   createRoutesFromElements,
   Route
 } from "react-router-dom";
-import Login from "./pages/registration/login/Login";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
