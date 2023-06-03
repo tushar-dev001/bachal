@@ -1,6 +1,13 @@
 import "./Login.css";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
+import {
+  TextField,
+  Modal,
+  Grid,
+  Button,
+  Box,
+  Typography,
+  Alert,
+} from "@mui/material/";
 import Heading from "../../components/Heading";
 import loginImg from "../../../public/loginImg.png";
 import google from "../../../public/google.png";
@@ -11,9 +18,22 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const initialValue = {
   email: "",
@@ -25,10 +45,13 @@ const initialValue = {
 const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  // const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [values, setValues] = useState(initialValue);
   const [loader, setLoader] = useState();
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const [error, setError] = useState("");
 
   const handleValues = (e) => {
     setValues({
@@ -37,28 +60,62 @@ const Login = () => {
     });
   };
 
-  const handleSignUp = () => {
+  const handleLogin = () => {
     const { email, password } = values;
     setLoader(true);
 
-    signInWithEmailAndPassword(auth, email, password).then((user) => {
-      console.log(user);
-      
-      setValues({
-        ...values,
-        email: "",
-        password: "",
-      });
-      setLoader(false);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((user) => {
+        console.log(user);
+        // setValues({
+        //   ...values,
+        //   password: "",
+        // });
+        setLoader(false);
+        navigate("/home");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        // const errorMessage = error.message;
+        setError(errorCode);
+        console.log(errorCode);
 
-      // navigate('/login')
-    });
+        if (errorCode === "auth/wrong-password") {
+          setValues({
+            password: "",
+          });
+          console.log("user paiche");
+          setLoader(false);
+        }
+        if (errorCode === "auth/user-not-found") {
+          setValues({
+            email: "",
+            password: "",
+          });
+          setLoader(false);
+          console.log("user paini");
+        }
+      });
+    setLoader(false);
   };
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider).then((result) => {
-      console.log(result, "google sent");
+      console.log(result);
     });
+  };
+
+  const forgotEmail = () => {
+    sendPasswordResetEmail(auth, text)
+      .then(() => {
+        navigate("/");
+        console.log("email sent");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+      });
   };
 
   return (
@@ -80,7 +137,11 @@ const Login = () => {
                 name="email"
                 value={values.email}
               />
+
             </div>
+              {error === 'auth/user-not-found' && (
+                <Alert severity="error"> Invalid Email</Alert>
+                )}
             <div className="reg-input">
               <TextField
                 id="outlined-basic"
@@ -91,24 +152,62 @@ const Login = () => {
                 name="password"
                 value={values.password}
               />
+
             </div>
+              {error === 'auth/wrong-password' && (
+                <Alert severity="error">
+                 Invalid Password
+                </Alert>
+              )}
 
             {loader ? (
               <LoadingButton className="signUp-btn" loading variant="outlined">
                 Submit
               </LoadingButton>
             ) : (
-              <button className="signUp-btn" onClick={handleSignUp}>
+              <button className="signUp-btn" onClick={handleLogin}>
                 Login To Continue
               </button>
             )}
 
             <p style={{ marginTop: "18px" }}>
-              Aren't have an account?{" "}
+              Are not have an account?{" "}
               <strong style={{ color: "blue", cursor: "pointer" }}>
                 <Link to="/">Sign Up</Link>
               </strong>
             </p>
+
+            <Button onClick={() => setOpen(true)}>Forgotten Password?</Button>
+            <Modal
+              open={open}
+              onClose={() => setOpen(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Find Your Account
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Please enter your email address or mobile number to search for
+                  your account.
+                </Typography>
+                <div className="reg-input">
+                  <TextField
+                    id="outlined-basic"
+                    type="email"
+                    label="Email Address"
+                    variant="outlined"
+                    onChange={(e) => setText(e.target.value)}
+                  />
+                </div>
+                <div style={{ marginTop: "18px" }}>
+                  <button className="btn" onClick={forgotEmail}>
+                    Search
+                  </button>
+                </div>
+              </Box>
+            </Modal>
           </div>
         </Grid>
         <Grid h2 xs={6}>

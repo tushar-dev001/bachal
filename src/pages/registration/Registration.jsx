@@ -78,9 +78,6 @@ const Registration = () => {
     });
   };
 
-  const handleEye = () =>{
-    console.log("one");
-  }
 
   return (
     <>

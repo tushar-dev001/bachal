@@ -23,7 +23,7 @@
 
 .reg-input{
     margin-top: 35px;
-    position: relative;
+    /* position: relative; */
 }
 .reg-input .MuiTextField-root{
     width: 75%;
@@ -50,6 +50,6 @@
 }
 
 .eye{
-    position: absolute;
+    /* position: absolute; */
 
 }
