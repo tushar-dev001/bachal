@@ -11,7 +11,7 @@ import {
 import Heading from "../../components/Heading";
 import loginImg from "../../../public/loginImg.png";
 import google from "../../../public/google.png";
-
+import { toast } from 'react-toastify';
 import { useState } from "react";
 import {
   getAuth,
@@ -47,6 +47,8 @@ const Login = () => {
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
 
+  const notify  = () => toast();
+
   const [values, setValues] = useState(initialValue);
   const [loader, setLoader] = useState();
   const [open, setOpen] = useState(false);
@@ -66,25 +68,31 @@ const Login = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        console.log(user);
+        console.log(user.user.emailVerified);
         // setValues({
         //   ...values,
         //   password: "",
         // });
         setLoader(false);
-        navigate("/home");
+        if(!user.user.emailVerified){
+          toast ("Please Verify Email For Login")
+        }else{
+          setTimeout(()=>{
+            navigate("/home");
+          },3000)
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
         // const errorMessage = error.message;
         setError(errorCode);
-        console.log(errorCode);
+        // console.log(errorCode);
 
         if (errorCode === "auth/wrong-password") {
           setValues({
             password: "",
           });
-          console.log("user paiche");
+          // console.log("user paiche");
           setLoader(false);
         }
         if (errorCode === "auth/user-not-found") {
@@ -93,7 +101,7 @@ const Login = () => {
             password: "",
           });
           setLoader(false);
-          console.log("user paini");
+          // console.log("user paini");
         }
       });
     setLoader(false);
@@ -101,7 +109,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider).then((result) => {
-      console.log(result);
+      // console.log(result);
     });
   };
 
@@ -114,7 +122,6 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
       });
   };
 

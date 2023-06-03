@@ -7,6 +7,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate, Link } from "react-router-dom";
 import {RiEyeFill, RiEyeCloseFill} from 'react-icons/ri'
+import { toast } from 'react-toastify';
 
 const initialValue = {
   email: "",
@@ -20,6 +21,8 @@ const initialValue = {
 const Registration = () => {
   const auth = getAuth();
   const navigate = useNavigate()
+
+  const notify = () => toast();
 
   const [values, setValues] = useState(initialValue);
   const [loader, setLoader] = useState()
@@ -50,13 +53,16 @@ const Registration = () => {
           return
     }
 
-    if(!password){
+    // let pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    // || !pattern.test(password)
+    if(!password ){
       setValues({
-            ...values,
-            error: "Enter Password",
-          })
-          return
+        ...values,
+        error: "Enter a One capital letter, One Number, One special cherecter, one small letter and something",
+      })
+      return
     }
+    // console.log(!password || !pattern.test(password))
      
     setLoader(true)
     createUserWithEmailAndPassword(auth, email, password).then((user) => {
@@ -70,11 +76,16 @@ const Registration = () => {
         email: "",
         fullName: "",
         password: "",
-        error: 'flase'
+        error: 'false'
       });
       setLoader(false)
 
-      navigate('/login')
+      setTimeout(()=>{
+        navigate('/login')
+
+      },3000)
+      toast("Registration Successfully! Please verify your email and login")
+
     });
   };
 

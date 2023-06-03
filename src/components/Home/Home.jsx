@@ -1,5 +1,5 @@
-import React from 'react'
-import {Button} from '@mui/material';
+
+// import {Button} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -11,7 +11,10 @@ const Home = () => {
 
 
   return (
-    <Button variant="contained" onClick={handleLogout}>Log Out</Button>
+    <>
+      <h1>home</h1>
+    </>
+    // <Button variant="contained" onClick={handleLogout}>Log Out</Button>
   )
 }
 
