@@ -8,7 +8,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material/";
-import Heading from "../../components/Heading";
+import Heading from "../../components/Heading/Heading";
 import loginImg from "../../../public/loginImg.png";
 import google from "../../../public/google.png";
 import { toast } from 'react-toastify';

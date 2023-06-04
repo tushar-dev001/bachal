@@ -1,7 +1,7 @@
 import "./Registration.css";
 import { TextField, Grid, Alert } from "@mui/material";
 import regImg from "../../../public/regImg.png";
-import Heading from "../../components/Heading";
+import Heading from "../../components/Heading/Heading";
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import LoadingButton from "@mui/lab/LoadingButton";
