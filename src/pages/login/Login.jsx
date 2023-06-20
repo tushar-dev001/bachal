@@ -8,7 +8,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material/";
-import Heading from "../../components/Heading/Heading";
+import Heading from "../../components/Shared/Heading/Heading";
 import loginImg from "../../../public/loginImg.png";
 import google from "../../../public/google.png";
 import { toast } from 'react-toastify';
@@ -22,6 +22,9 @@ import {
 } from "firebase/auth";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {userData} from '../../slices/userSlices/UserSlices.js'
+
 
 const style = {
   position: "absolute",
@@ -46,6 +49,7 @@ const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const notify  = () => toast();
 
@@ -77,6 +81,8 @@ const Login = () => {
         if(!user.user.emailVerified){
           toast ("Please Verify Email For Login")
         }else{
+          dispatch(userData(user.user))
+          localStorage.setItem('user', JSON.stringify(user.user))
           setTimeout(()=>{
             navigate("/home");
           },3000)
@@ -109,7 +115,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider).then((result) => {
-      // console.log(result);
+      navigate('/home')
     });
   };
 

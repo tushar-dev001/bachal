@@ -8,9 +8,9 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./components/Home/Home";
+import Home from "./components/Home/HomeDesign/Home";
+import Messege from './components/Message/Message'
 import RootLayOut from "./components/RootLayOut/RootLayOut";
-import Message from "./components/Message/Message";
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "message",
-        element: <Message />,
+        element: <Messege />,
       },
     ],
   },

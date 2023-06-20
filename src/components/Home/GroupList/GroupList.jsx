@@ -1,7 +1,8 @@
+import Btn from "../../Shared/Button/Btn";
+import Heading from "../../Shared/Heading/Heading";
+import User from "../../User/User"
 import "./GroupList.css";
-import Heading from "../Heading/Heading";
-import User from "../User/User";
-import Btn from "../Button/Btn";
+
 
 const GroupList = () => {
   return (
@@ -187,7 +188,6 @@ const GroupList = () => {
             <Btn title="Join" />
           </div>
         </div>
-
       </div>
     </>
   );
